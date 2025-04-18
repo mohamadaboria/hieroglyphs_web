@@ -26,3 +26,4 @@ Make sure the file `fonts/NotoSansEgyptianHieroglyphs-Regular.ttf` exists and is
 
 Free to use for educational and personal projects.# hieroglyphs_web
 # hieroglyphs_web
+# hieroglyphs_web
