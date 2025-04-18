@@ -36,7 +36,8 @@ def image():
         font = ImageFont.truetype("fonts/NotoSansEgyptianHieroglyphs-Regular.ttf", 48)
     except:
         font = ImageFont.load_default()
-    draw.text((20, 70), text, font=font, fill=(0, 0, 0))
+        draw.text((20, 70), text[::-1], font=font, fill=(0, 0, 0))
+    #draw.text((20, 70), text, font=font, fill=(0, 0, 0))
     img_io = io.BytesIO()
     img.save(img_io, "PNG")
     img_io.seek(0)
