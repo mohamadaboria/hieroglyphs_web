@@ -17,7 +17,7 @@
         <button type="submit">تحويل</button>
     </form>
     {% if result %}
-        <div class="result">النتيجة: {{ result }}</div>
+    <div class="result" style="direction: rtl; unicode-bidi: bidi-override;">النتيجة: {{ result[::-1] }}</div>
         <img src="/image?text={{ result }}" alt="Hieroglyph Image">
     {% endif %}
 </body>
