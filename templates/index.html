@@ -6,7 +6,7 @@
     <style>
         body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f0f0f0; }
         input, button { padding: 10px; font-size: 16px; }
-        .result { margin-top: 30px; font-size: 30px; direction: rtl; unicode-bidi: bidi-override; text-align: right;}
+        .result { margin-top: 30px; font-size: 30px; }
         img { margin-top: 20px; border: 1px solid #c1da82; }
     </style>
 </head>
@@ -17,7 +17,12 @@
         <button type="submit">تحويل</button>
     </form>
     {% if result %}
-    <div class="result">النتيجة: {{ result[::-1] }}</div>
+    <div class="result">
+        النتيجة:
+        <span style="direction: rtl; unicode-bidi: bidi-override; display: inline-block;">
+          {{ result[::-1] }}
+        </span>
+      </div>
         <img src="/image?text={{ result }}" alt="Hieroglyph Image">
     {% endif %}
 </body>
