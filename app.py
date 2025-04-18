@@ -33,12 +33,15 @@ def image():
     reversed_text = text[::-1]
     img = Image.new("RGB", (600, 200), color=(255, 255, 255))
     draw = ImageDraw.Draw(img)
+
     try:
         font = ImageFont.truetype("fonts/NotoSansEgyptianHieroglyphs-Regular.ttf", 48)
     except:
         font = ImageFont.load_default()
 
-    text_width, _ = draw.textsize(reversed_text, font=font)
+    bbox = draw.textbbox((0, 0), reversed_text, font=font)
+    text_width = bbox[2] - bbox[0]
+
     x_position = 600 - text_width - 20
     draw.text((x_position, 70), reversed_text, font=font, fill=(0, 0, 0))
 
