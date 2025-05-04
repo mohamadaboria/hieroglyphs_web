@@ -52,6 +52,7 @@ def image():
     arabic_x = (img.width - (arabic_bbox[2] - arabic_bbox[0])) // 2
     draw.text((arabic_x, 30), arabic_text, font=arabic_font, fill=(0, 0, 0))
 
+
     hiero_bbox = draw.textbbox((0, 0), hieroglyphic_text, font=hiero_font)
     hiero_x = (img.width - (hiero_bbox[2] - hiero_bbox[0])) // 2
     draw.text((hiero_x, 150), hieroglyphic_text, font=hiero_font, fill=(0, 0, 0))
@@ -60,7 +61,7 @@ def image():
     img.save(img_io, "PNG")
     img_io.seek(0)
     return send_file(img_io, mimetype="image/png")
-
+     #
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
