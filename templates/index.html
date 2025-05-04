@@ -4,10 +4,25 @@
     <meta charset="UTF-8">
     <title>محوّل الأسماء إلى هيروغليفية</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f0f0f0; }
-        input, button { padding: 10px; font-size: 16px; }
-        .result { margin-top: 30px; font-size: 30px; }
-        img { margin-top: 20px; border: 1px solid #c1da82; }
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 30px;
+            font-size: 30px;
+        }
+        img {
+            margin-top: 20px;
+            border: 1px solid #c1da82;
+            max-width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -16,14 +31,16 @@
         <input type="text" name="name" placeholder="اكتب اسمك بالعربية" required>
         <button type="submit">تحويل</button>
     </form>
+
     {% if result %}
-    <div class="result">
-        النتيجة:
-        <span style="direction: rtl; unicode-bidi: bidi-override; display: inline-block;">
-          {{ result }}
-        </span>
-      </div>
-        <img src="/image?text={{ result }}" alt="Hieroglyph Image">
+        <div class="result">
+            النتيجة:
+            <span style="direction: rtl; unicode-bidi: bidi-override; display: inline-block;">
+              {{ result }}
+            </span>
+        </div>
+        
+        <img src="/image?text={{ name }}" alt="Hieroglyph Image">
     {% endif %}
 </body>
 </html>
