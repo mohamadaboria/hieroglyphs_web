@@ -24,6 +24,16 @@
             border: 1px solid #c1da82;
             max-width: 100%;
         }
+        #download-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #c1da82;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -40,7 +50,13 @@
               {{ result }}
             </span>
         </div>
-        <img src="/image?text={{ name }}" alt="Hieroglyph Image">
+        <img id="result-image" src="/image?text={{ name }}" alt="Hieroglyph Image">
+
+<br><br>
+<a id="download-link" href="/image?text={{ name }}" download="hieroglyph_{{ name }}.png">
+    📥 Download
+</a>
+
     {% endif %}
 </body>
 </html>
