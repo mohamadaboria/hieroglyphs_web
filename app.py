@@ -5,6 +5,7 @@ import os
 
 app = Flask(__name__)
 
+
 arabic_to_hieroglyphs = {
     'ا': '𓄿', 'ب': '𓃀', 'ت': '𓏏', 'ث': '𓍿',
     'ج': '𓎼', 'ح': '𓉔', 'خ': '𓐍', 'د': '𓂧',
@@ -16,34 +17,44 @@ arabic_to_hieroglyphs = {
     'ء': '𓀀', 'ى': '𓇌', 'ة': '𓏏'
 }
 
+
 def translate_to_hieroglyphs(text):
     return ''.join(arabic_to_hieroglyphs.get(c, c) for c in text)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    result = ""
+    name = ""
+    image_url = None
     if request.method == "POST":
         name = request.form.get("name", "")
-        result = translate_to_hieroglyphs(name)
-    return render_template("index.html", result=result)
+        if name:
+            image_url = f"/image?text={name}"
+    return render_template("index.html", image_url=image_url, name=name)
 
 @app.route("/image")
 def image():
-    text = request.args.get("text", "")
-    reversed_text = text[::-1]
-    img = Image.new("RGB", (600, 200), color=(255, 255, 255))
+    arabic_text = request.args.get("text", "")
+    hieroglyphic_text = translate_to_hieroglyphs(arabic_text)[::-1]
+
+    img = Image.new("RGB", (800, 300), color=(255, 255, 255))
     draw = ImageDraw.Draw(img)
 
     try:
-        font = ImageFont.truetype("fonts/NotoSansEgyptianHieroglyphs-Regular.ttf", 48)
+        hiero_font = ImageFont.truetype("fonts/NotoSansEgyptianHieroglyphs-Regular.ttf", 64)
+        arabic_font = ImageFont.truetype("fonts/Amiri-Regular.ttf", 48)
     except:
-        font = ImageFont.load_default()
+        hiero_font = ImageFont.load_default()
+        arabic_font = ImageFont.load_default()
 
-    bbox = draw.textbbox((0, 0), reversed_text, font=font)
-    text_width = bbox[2] - bbox[0]
+    
+    arabic_bbox = draw.textbbox((0, 0), arabic_text, font=arabic_font)
+    arabic_x = (img.width - (arabic_bbox[2] - arabic_bbox[0])) // 2
+    draw.text((arabic_x, 30), arabic_text, font=arabic_font, fill=(0, 0, 0))
 
-    x_position = 600 - text_width - 20
-    draw.text((x_position, 70), reversed_text, font=font, fill=(0, 0, 0))
+    
+    hiero_bbox = draw.textbbox((0, 0), hieroglyphic_text, font=hiero_font)
+    hiero_x = (img.width - (hiero_bbox[2] - hiero_bbox[0])) // 2
+    draw.text((hiero_x, 150), hieroglyphic_text, font=hiero_font, fill=(0, 0, 0))
 
     img_io = io.BytesIO()
     img.save(img_io, "PNG")
