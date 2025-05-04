@@ -1,10 +1,10 @@
+
 from flask import Flask, render_template, request, send_file
 from PIL import Image, ImageDraw, ImageFont
 import io
 import os
 
 app = Flask(__name__)
-
 
 arabic_to_hieroglyphs = {
     'ا': '𓄿', 'ب': '𓃀', 'ت': '𓏏', 'ث': '𓍿',
@@ -17,19 +17,20 @@ arabic_to_hieroglyphs = {
     'ء': '𓀀', 'ى': '𓇌', 'ة': '𓏏'
 }
 
-
 def translate_to_hieroglyphs(text):
     return ''.join(arabic_to_hieroglyphs.get(c, c) for c in text)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     name = ""
+    result = ""
     image_url = None
     if request.method == "POST":
         name = request.form.get("name", "")
+        result = translate_to_hieroglyphs(name)
         if name:
             image_url = f"/image?text={name}"
-    return render_template("index.html", image_url=image_url, name=name)
+    return render_template("index.html", result=result, name=name, image_url=image_url)
 
 @app.route("/image")
 def image():
@@ -42,16 +43,15 @@ def image():
     try:
         hiero_font = ImageFont.truetype("fonts/NotoSansEgyptianHieroglyphs-Regular.ttf", 64)
         arabic_font = ImageFont.truetype("fonts/Amiri-Regular.ttf", 48)
-    except:
+    except Exception as e:
+        print(f"[FONT ERROR] {e}")
         hiero_font = ImageFont.load_default()
         arabic_font = ImageFont.load_default()
 
-    
     arabic_bbox = draw.textbbox((0, 0), arabic_text, font=arabic_font)
     arabic_x = (img.width - (arabic_bbox[2] - arabic_bbox[0])) // 2
     draw.text((arabic_x, 30), arabic_text, font=arabic_font, fill=(0, 0, 0))
 
-    
     hiero_bbox = draw.textbbox((0, 0), hieroglyphic_text, font=hiero_font)
     hiero_x = (img.width - (hiero_bbox[2] - hiero_bbox[0])) // 2
     draw.text((hiero_x, 150), hieroglyphic_text, font=hiero_font, fill=(0, 0, 0))
